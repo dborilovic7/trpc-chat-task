@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink, wsLink, splitLink, createWSClient } from "@trpc/client";
 import { trpc } from "../trpc";
-import App from "./App.tsx";
+import App from "./App";
 import "./index.css";
 
 const HTTP_URL = "http://localhost:3000";

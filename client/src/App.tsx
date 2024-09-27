@@ -1,8 +1,10 @@
-import { trpc } from "../trpc";
+// import { trpc } from "../trpc";
+import Chat from "./components/Chat";
 
 function App() {
-  const helloQuery = trpc[""].useQuery();
-  return <h1>The server says "{helloQuery.data}"</h1>
+  return (
+    <Chat />
+  );
 }
 
 export default App;
