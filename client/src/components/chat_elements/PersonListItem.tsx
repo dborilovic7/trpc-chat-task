@@ -1,16 +1,14 @@
 const PersonListItem = () => {
   return (
     <li className="flex justify-between items-center gap-2 border border-black/25 rounded-xl
-      mb-4 last:mb-0 px-4 py-2 shadow-md">
+      mb-4 last:mb-0 px-2 sm:px-4 py-1 sm:py-2 shadow-md">
       <img
         src="/src/assets/images/avatar-ph.png"
         alt="User profile picture"
-        width={72}
-        height={72}
-        className="col-span-2 border-2 border-black/25 rounded-full"
+        className="border-2 border-black/25 rounded-full w-18 h-18"
       />
-      <h3 className="col-span-3 text-2xl">Person Personic</h3>
-      <div></div>
+      <h3 className="text-xl 2xl:text-2xl lg:ml-2">DugackoIme JedneOsobe</h3>
+      <div className="w-4 2xl:w-18"></div>
     </li>
   );
 }

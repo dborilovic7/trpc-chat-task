@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media(max-width: 767px) {
+  #chat-person-list-container:has(+ #chat-area-container) {
+    display: none;
+  }
+}

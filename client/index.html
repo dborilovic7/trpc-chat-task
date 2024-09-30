@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tRPC Chat</title>
   </head>
-  <body class="flex justify-center items-center h-screen w-screen px-20 py-16 bg-wild-blue-yonder">
-    <div id="root" class="grid grid-cols-3 grid-rows-1 w-full h-full text-bubbles rounded-xl shadow-xl"></div>
+  <body class="flex justify-center items-center h-screen w-screen sm:px-10 sm:py-8 md:p-0 lg:px-14 lg:py-12
+    xl:px-20 xl:py-16 bg-wild-blue-yonder">
+    <div id="root" class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 grid-rows-1 w-full h-full text-bubbles
+      lg:rounded-xl lg:shadow-xl overflow-hidden"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

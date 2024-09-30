@@ -22,7 +22,8 @@ const ChatMessage = ({you=true, children}: { you?: boolean, children: ReactNode}
         height={36}
         className={`border ${styles.borderColor} rounded-full`}
       />
-      <p className={`p-2 ${styles.backgroundColor} rounded-xl shadow-sm max-w-[80%]`}>
+      <p className={`p-2 ${styles.backgroundColor} rounded-xl shadow-sm max-w-[70%] sm:max-w-[80%]
+        md:max-w-[77%] lg:max-w-[80%] xl:max-w-[84%] 2xl:max-w-[90%]`}>
         {children}
       </p>
     </div>
