@@ -25,7 +25,7 @@ const ChatArea = () => {
         </div>
 
         <div id="chat-area-actions">
-          <p className="text-blue-500">✖</p>
+          <img src="/src/assets/icons/close.svg" alt="Close icon" className="w-10 h-10" />
         </div>
       </div>
       
