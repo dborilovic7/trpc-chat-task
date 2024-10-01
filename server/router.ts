@@ -3,11 +3,7 @@ import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 import { EventEmitter } from "events";
 import { loginUser } from "./clientHandler";
-
-type Message = {
-  nickname: string;
-  message: string;
-}
+import type { Message } from "./types";
 
 const ee = new EventEmitter();
 

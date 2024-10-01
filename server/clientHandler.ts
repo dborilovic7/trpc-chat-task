@@ -1,13 +1,9 @@
-import { WebSocket } from "ws";
-import { IncomingMessage } from "http";
 import querystring from "querystring";
+import { IncomingMessage } from "http";
+import { WebSocket } from "ws";
+import type { Client } from "./types";
 
 const clients: { [key: string]: Client } = {};
-
-type Client = {
-  nickname?: string;
-  ws: WebSocket
-}
 
 export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
   const queryString = querystring.parse(req.url!);
