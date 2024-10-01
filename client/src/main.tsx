@@ -6,9 +6,9 @@ import { trpc } from "../trpc";
 import App from "./App";
 import "./index.css";
 
-const uuid = crypto.randomUUID();
+const UUID = crypto.randomUUID();
 const HTTP_URL = "http://localhost:3000";
-const WS_URL = `ws://localhost:3000?id=${uuid}`;
+const WS_URL = `ws://localhost:3000?id=${UUID}`;
 
 const queryClient = new QueryClient();
 const wsClient = createWSClient({ url: WS_URL });
@@ -26,7 +26,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <App uuid={uuid} />
+        <App uuid={UUID} />
       </QueryClientProvider>
     </trpc.Provider>
   </StrictMode>,
