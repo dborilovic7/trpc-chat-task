@@ -1,10 +1,22 @@
-// import { trpc } from "../trpc";
+import { useState } from "react";
+import { trpc } from "../trpc";
 import Chat from "./components/Chat";
+import Login from "./components/Login";
 
-function App() {
-  return (
-    <Chat />
-  );
+function App({uuid}: {uuid: string}) {
+  const [nickname, setNickname] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const loginMutation = trpc.login.useMutation({
+    onSuccess() {
+      setLoggedIn(true);
+    },
+  });
+  const login = () => loginMutation.mutate({ id: uuid, nickname });
+
+  return loggedIn
+    ? <Chat nickname={nickname} />
+    : <Login nickname={nickname} setNickname={setNickname} login={login} />
 }
 
 export default App;

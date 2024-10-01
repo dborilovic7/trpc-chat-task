@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import http from "http";
-import { appRouter, AppRouter } from "./trpc";
+import { appRouter, AppRouter } from "./router";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { Server as wsServer } from "ws";
 import { applyWSSHandler } from "@trpc/server/adapters/ws";
+import { registerClient, unregisterClient } from "./clientHandler";
 
 const PORT = 3000;
 
@@ -24,6 +25,12 @@ app.use(cors());
 app.use("/", createExpressMiddleware<AppRouter>({
   router: appRouter
 }))
+
+wss.on("connection", (ws, req) => {
+  registerClient(ws, req);
+
+  ws.on("close", () => unregisterClient(ws));
+});
 
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
