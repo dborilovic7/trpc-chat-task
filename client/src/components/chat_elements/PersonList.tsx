@@ -1,6 +1,7 @@
 import PersonListItem from "./PersonListItem";
+import { User } from "../../../../server/types";
 
-const PersonList = () => {
+const PersonList = ({personList}: {personList: User[]}) => {
   return (
     <div id="chat-person-list-container" className="flex flex-col bg-queen-blue sm:rounded-xl md:rounded-none
       md:col-span-2 lg:col-span-1">
@@ -9,9 +10,7 @@ const PersonList = () => {
         font-semibold border-b border-black/25">tRPChat</h1>
 
       <ul id="chat-person-list" className="p-4 sm:px-16 sm:py-8 md:p-8 h-full overflow-auto">
-        <PersonListItem />
-        <PersonListItem />
-        <PersonListItem />
+        {personList.map((person, i) => <PersonListItem key={i} nickname={person.nickname} />)}
       </ul>
     </div>
   );

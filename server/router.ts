@@ -2,10 +2,10 @@ import { router, publicProcedure } from "./trpc";
 import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 import { EventEmitter } from "events";
-import { loginUser } from "./clientHandler";
-import type { Message } from "./types";
+import { loginUser, otherUsers } from "./clientHandler";
+import type { Message, User } from "./types";
 
-const ee = new EventEmitter();
+export const mainEE = new EventEmitter();
 
 export const appRouter = router({
   "": publicProcedure
@@ -23,6 +23,24 @@ export const appRouter = router({
       loginUser(id, nickname);
     }),
 
+  onUsersUpdate: publicProcedure
+    .input(z.string())
+    .subscription(({input}) => {
+      return observable<User[]>(emit => {
+        const onUsersUpdate = () => emit.next(otherUsers(input));
+
+        mainEE.on("usersUpdate", onUsersUpdate);
+        
+        return () => {
+          mainEE.off("usersUpdate", onUsersUpdate);
+        }
+      });
+    }),
+
+  getUsers: publicProcedure
+    .input(z.string())
+    .query(({input}) => otherUsers(input)),
+
   onMessage: publicProcedure
     .input(z.string())
     .subscription(({input}) => {
@@ -31,10 +49,10 @@ export const appRouter = router({
           emit.next(data);
         }
 
-        ee.on("message", onMessage);
+        mainEE.on("message", onMessage);
 
         return () => {
-          ee.off("message", onMessage);
+          mainEE.off("message", onMessage);
         }
       });
     }),
@@ -45,7 +63,7 @@ export const appRouter = router({
       message: z.string()
     }))
     .mutation(async ({input}) => {
-      ee.emit("message", input);
+      mainEE.emit("message", input);
     })
 });
 

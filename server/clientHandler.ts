@@ -1,9 +1,13 @@
 import querystring from "querystring";
 import { IncomingMessage } from "http";
 import { WebSocket } from "ws";
-import type { Client } from "./types";
+import type { Client, User } from "./types";
+import { mainEE } from "./router";
 
-const clients: { [key: string]: Client } = {};
+let clients: { [key: string]: Client } = {};
+let users: User[] = [];
+
+export const otherUsers = (id: string) => users.filter(user => user.id !== id);
 
 export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
   const queryString = querystring.parse(req.url!);
@@ -16,13 +20,22 @@ export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
 
 export const unregisterClient = (ws: WebSocket) => {
   const id = Object.keys(clients).find(id => clients[id].ws === ws) ?? "";
+  const index = users.indexOf({id, nickname: clients[id].nickname ?? ""});
+
+  users.splice(index, 1);
   delete clients[id];
+  mainEE.emit("usersUpdate");
   
   console.log(`Removed a client with UUID: ${id}.`);
   console.log(`Clients size: ${Object.keys(clients).length}`);
+  console.log(`Users size: ${users.length}`);
 }
 
 export const loginUser = (id: string, nickname: string) => {
   clients[id].nickname = nickname;
+  users.push({id, nickname});
+  mainEE.emit("usersUpdate");
+
   console.log(`Set ${id}'s nickname to ${nickname}.`);
+  console.log(`Users size: ${users.length}`);
 }

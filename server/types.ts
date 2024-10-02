@@ -7,5 +7,10 @@ export type Message = {
 
 export type Client = {
   nickname?: string;
-  ws: WebSocket
+  ws: WebSocket;
+}
+
+export type User = {
+  id: string;
+  nickname: string;
 }

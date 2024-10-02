@@ -12,10 +12,14 @@ function App({uuid}: {uuid: string}) {
       setLoggedIn(true);
     },
   });
-  const login = () => loginMutation.mutate({ id: uuid, nickname });
+
+  const login = (e: SubmitEvent) => {
+    e.preventDefault();
+    loginMutation.mutate({ id: uuid, nickname });
+  }
 
   return loggedIn
-    ? <Chat nickname={nickname} />
+    ? <Chat uuid={uuid} />
     : <Login nickname={nickname} setNickname={setNickname} login={login} />
 }
 
