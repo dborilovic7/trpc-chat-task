@@ -42,8 +42,7 @@ export const appRouter = router({
     .query(({input}) => otherUsers(input)),
 
   onMessage: publicProcedure
-    .input(z.string())
-    .subscription(({input}) => {
+    .subscription(() => {
       return observable<Message>(emit => {
         const onMessage = (data: Message) => {
           emit.next(data);
@@ -59,8 +58,8 @@ export const appRouter = router({
 
   message: publicProcedure
     .input(z.object({
-      nickname: z.string(),
-      message: z.string()
+      userId: z.string(),
+      text: z.string()
     }))
     .mutation(async ({input}) => {
       mainEE.emit("message", input);

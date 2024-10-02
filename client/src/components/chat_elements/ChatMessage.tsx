@@ -1,9 +1,14 @@
 import { ReactNode } from "react";
 
-const ChatMessage = ({you=true, children}: { you?: boolean, children: ReactNode}) => {
+type ChatMessagePropTypes = {
+  you: boolean;
+  children?: ReactNode;
+}
+
+const ChatMessage = ({you, children}: ChatMessagePropTypes) => {
   const styles = you
   ? {
-    reverseClass: "flex-row-reverse",
+    reverseClass: " flex-row-reverse",
     borderColor: "border-queen-blue",
     backgroundColor: "bg-queen-blue"
   }
@@ -14,7 +19,7 @@ const ChatMessage = ({you=true, children}: { you?: boolean, children: ReactNode}
   }
 
   return (
-    <div className={`chat-message flex ${styles.reverseClass} gap-2 items-end mb-2 last:mb-0`}>
+    <div className={`chat-message flex${styles.reverseClass} gap-2 items-end mb-2 last:mb-0`}>
       <img
         src="/src/assets/images/avatar-ph.png"
         alt="User profile picture"

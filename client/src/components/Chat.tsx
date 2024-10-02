@@ -6,6 +6,7 @@ import type { User } from "../../../server/types";
 
 const Chat = ({uuid}: {uuid: string}) => {
   const [personList, setPersonList] = useState<User[]>([]);
+  const [chatPartner, setChatPartner] = useState<User|null>(null);
 
   trpc.getUsers.useQuery(uuid, {
     onSuccess(data) {
@@ -22,8 +23,8 @@ const Chat = ({uuid}: {uuid: string}) => {
   return (
     <div id="chat-app" className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 grid-rows-1 w-full h-full
       text-bubbles lg:rounded-xl lg:shadow-xl overflow-hidden">
-      <PersonList personList={personList} />
-      <ChatArea />
+      <PersonList personList={personList} chatPartner={chatPartner} setChatPartner={setChatPartner} />
+      <ChatArea uuid={uuid} chatPartner={chatPartner} setChatPartner={setChatPartner} />
     </div>
   );
 }

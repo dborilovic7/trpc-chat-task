@@ -1,8 +1,8 @@
 import { WebSocket } from "ws";
 
 export type Message = {
-  nickname: string;
-  message: string;
+  userId: string;
+  text: string;
 }
 
 export type Client = {
