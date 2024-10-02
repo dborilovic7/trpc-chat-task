@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, Dispatch, SetStateAction, ChangeEvent } from "react";
 import ChatMessage from "./ChatMessage";
 import InactiveChatArea from "./InactiveChatArea";
 import type { Message, User } from "../../../../server/types";
@@ -10,10 +10,16 @@ type ChatAreaPropTypes = {
 }
 
 const ChatArea = ({uuid, chatPartner, setChatPartner}: ChatAreaPropTypes) => {
+  const [messageInput, setMessageInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setMessageInput(value);
+  }
+
   return chatPartner ? (
-    <div id="chat-area-container" className="md:flex flex-col bg-bubbles sm:rounded-xl md:rounded-none
+    <div id="chat-area-container" className="flex flex-col bg-bubbles sm:rounded-xl md:rounded-none
       md:col-span-3 lg:col-span-2">
       
       <div id="chat-area-header" className="flex justify-between items-center border-b border-black/25
@@ -43,6 +49,11 @@ const ChatArea = ({uuid, chatPartner, setChatPartner}: ChatAreaPropTypes) => {
         <ChatMessage you={true}>Dobro sam. Kako ste vi?</ChatMessage>
         <ChatMessage you={false}>Super!</ChatMessage>
         {messages.map(message => <ChatMessage you={message.userId !== uuid}>{message.text}</ChatMessage>)}
+      </div>
+
+      <div className="flex border-t border-black/25">
+        <input type="text" value={messageInput} onChange={handleChange} className="w-5/6 p-3 text-black 2xl:text-lg" />
+        <button className="flex-auto bg-medium-ruby 2xl:text-lg font-semibold">Send</button>
       </div>
       
     </div>
