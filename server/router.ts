@@ -2,7 +2,7 @@ import { router, publicProcedure } from "./trpc";
 import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 import { EventEmitter } from "events";
-import { loginUser, otherUsers } from "./clientHandler";
+import { loginUser, otherUsers, getOrCreateChannel, channels, channelMessages } from "./clientHandler";
 import type { Message, User } from "./types";
 
 export const mainEE = new EventEmitter();
@@ -41,17 +41,29 @@ export const appRouter = router({
     .input(z.string())
     .query(({input}) => otherUsers(input)),
 
+  getChannelData: publicProcedure
+    .input(z.object({
+      userId: z.string(),
+      partnerId: z.string()
+    }))
+    .mutation(({input}) => {
+      const {userId, partnerId} = input;
+      return getOrCreateChannel(userId, partnerId);
+    }),
+
   onMessage: publicProcedure
-    .subscription(() => {
+    .input(z.string())
+    .subscription(({input: channelId}) => {
       return observable<Message>(emit => {
         const onMessage = (data: Message) => {
           emit.next(data);
         }
 
-        mainEE.on("message", onMessage);
+        channels.get(channelId)!.on("message", onMessage);
 
         return () => {
-          mainEE.off("message", onMessage);
+          channels.get(channelId)?.off("message", onMessage);
+          channels.delete(channelId);
         }
       });
     }),
@@ -59,10 +71,15 @@ export const appRouter = router({
   message: publicProcedure
     .input(z.object({
       userId: z.string(),
+      channelId: z.string(),
       text: z.string()
     }))
-    .mutation(async ({input}) => {
-      mainEE.emit("message", input);
+    .mutation(({input}) => {
+      const { channelId } = input;
+      const channel = channels.get(channelId);
+
+      channelMessages[channelId].push(input);
+      channel?.emit("message", {...input});
     })
 });
 

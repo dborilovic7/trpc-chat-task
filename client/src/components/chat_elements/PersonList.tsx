@@ -1,14 +1,26 @@
 import PersonListItem from "./PersonListItem";
 import { Dispatch, SetStateAction } from "react";
-import type { User } from "../../../../server/types";
+import type { Message, User } from "../../../../server/types";
 
 type PersonListPropTypes = {
+  uuid: string;
   personList: User[];
   chatPartner: User|null;
   setChatPartner: Dispatch<SetStateAction<User|null>>;
+  partnerToChannelMap: {[key: string]: string};
+  setPartnerToChannelMap: Dispatch<SetStateAction<{[key: string]: string}>>;
+  setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
 }
 
-const PersonList = ({personList, chatPartner, setChatPartner}: PersonListPropTypes) => {
+const PersonList = ({
+  uuid,
+  personList,
+  chatPartner,
+  setChatPartner,
+  partnerToChannelMap,
+  setPartnerToChannelMap,
+  setChannelMessages
+}: PersonListPropTypes) => {
   return (
     <div id="chat-person-list-container" className="flex flex-col bg-queen-blue sm:rounded-xl md:rounded-none
       md:col-span-2 lg:col-span-1">
@@ -18,7 +30,16 @@ const PersonList = ({personList, chatPartner, setChatPartner}: PersonListPropTyp
 
       <ul id="chat-person-list" className="p-4 sm:px-16 sm:py-8 md:p-8 h-full overflow-auto">
         {personList.map((person, i) => (
-          <PersonListItem key={i} person={person} setChatPartner={setChatPartner} highlight={person === chatPartner} />
+          <PersonListItem
+            key={`p${i}`}
+            uuid={uuid}
+            person={person}
+            setChatPartner={setChatPartner}
+            highlight={person.id === chatPartner?.id}
+            channelId={partnerToChannelMap[person.id]}
+            setPartnerToChannelMap={setPartnerToChannelMap}
+            setChannelMessages={setChannelMessages}
+          />
         ))}
       </ul>
     </div>

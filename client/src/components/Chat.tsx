@@ -2,11 +2,16 @@ import { useState } from "react";
 import { trpc } from "../../trpc";
 import PersonList from "./chat_elements/PersonList";
 import ChatArea from "./chat_elements/ChatArea";
-import type { User } from "../../../server/types";
+import type { Message, User } from "../../../server/types";
 
 const Chat = ({uuid}: {uuid: string}) => {
   const [personList, setPersonList] = useState<User[]>([]);
   const [chatPartner, setChatPartner] = useState<User|null>(null);
+  const [partnerToChannelMap, setPartnerToChannelMap] = useState<{[key: string]: string}>({});
+  const [channelMessages, setChannelMessages] = useState<{[key:string]: Message[]}>({});
+
+  const channelId = chatPartner?.id ? partnerToChannelMap[chatPartner.id] : null;
+  const messages = channelId ? channelMessages[channelId] : [];
 
   trpc.getUsers.useQuery(uuid, {
     onSuccess(data) {
@@ -20,11 +25,35 @@ const Chat = ({uuid}: {uuid: string}) => {
     }
   });
 
+  trpc.onMessage.useSubscription(channelId!, {
+    enabled: !!channelId,
+    onData(data) {
+      setChannelMessages(prevMessages => {
+        const newMessages = [...prevMessages[channelId!], data];
+        return {...prevMessages, [channelId!]: newMessages};
+      });
+    }
+  });
+
   return (
     <div id="chat-app" className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 grid-rows-1 w-full h-full
       text-bubbles lg:rounded-xl lg:shadow-xl overflow-hidden">
-      <PersonList personList={personList} chatPartner={chatPartner} setChatPartner={setChatPartner} />
-      <ChatArea uuid={uuid} chatPartner={chatPartner} setChatPartner={setChatPartner} />
+      <PersonList
+        uuid={uuid}
+        personList={personList}
+        chatPartner={chatPartner}
+        setChatPartner={setChatPartner}
+        partnerToChannelMap={partnerToChannelMap}
+        setPartnerToChannelMap={setPartnerToChannelMap}
+        setChannelMessages={setChannelMessages}
+      />
+      <ChatArea
+        uuid={uuid}
+        chatPartner={chatPartner}
+        setChatPartner={setChatPartner}
+        channelId={channelId}
+        messages={messages}
+      />
     </div>
   );
 }

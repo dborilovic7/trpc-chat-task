@@ -1,20 +1,49 @@
 import { Dispatch, SetStateAction } from "react";
-import type { User } from "../../../../server/types";
+import { trpc } from "../../../trpc";
+import type { Message, User } from "../../../../server/types";
 
 type PersonListItemPropTypes = {
+  uuid: string;
   person: User;
   setChatPartner: Dispatch<SetStateAction<User|null>>;
   highlight: boolean;
+  channelId: string|null;
+  setPartnerToChannelMap: Dispatch<SetStateAction<{[key: string]: string}>>;
+  setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
 }
 
-const PersonListItem = ({person, setChatPartner, highlight}: PersonListItemPropTypes) => {
+const PersonListItem = ({
+  uuid,
+  person,
+  setChatPartner,
+  highlight,
+  channelId,
+  setPartnerToChannelMap,
+  setChannelMessages
+}: PersonListItemPropTypes) => {
+  const getChannelDataMutation = trpc.getChannelData.useMutation({
+    onSuccess(data) {
+      const { channelId, messages } = data;
+      const partnerId = person.id;
+      setChatPartner(person);
+      setPartnerToChannelMap(prevMap => ({...prevMap, [partnerId]: channelId}));
+      setChannelMessages(prevMessages => ({...prevMessages, [channelId]: messages}));
+    },
+  });
+
+  const handlePersonClick = () => {
+    channelId
+      ? setChatPartner(person)
+      : getChannelDataMutation.mutate({userId: uuid, partnerId: person.id});
+  }
+
   const buttonHighlightClass = highlight ? " bg-bubbles text-medium-ruby font-semibold" : "";
   const imgHighlightClass = highlight ? "border-medium-ruby" : "border-black/25";
 
   return (
-    <li>
-      <button onClick={() => setChatPartner(person)} className={`flex justify-between items-center gap-2 w-full h-full border border-black/25
-        rounded-xl mb-4 last:mb-0 px-2 sm:px-4 py-1 sm:py-2 shadow-md${buttonHighlightClass}`}>
+    <li className="mb-4 last:mb-0">
+      <button onClick={handlePersonClick} className={`flex justify-between items-center gap-2 w-full h-full
+        border border-black/25 rounded-xl px-2 sm:px-4 py-1 sm:py-2 shadow-md${buttonHighlightClass}`}>
         <img
           src="/src/assets/images/avatar-ph.png"
           alt="User profile picture"

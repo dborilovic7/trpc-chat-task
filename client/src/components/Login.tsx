@@ -1,9 +1,9 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, MouseEventHandler, SetStateAction } from "react";
 
 type LoginPropTypes = {
   nickname: string;
-  setNickname: Dispatch<SetStateAction<string>>,
-  login: Function
+  setNickname: Dispatch<SetStateAction<string>>;
+  login: MouseEventHandler;
 }
 
 const Login = ({nickname, setNickname, login}: LoginPropTypes) => {
@@ -17,7 +17,7 @@ const Login = ({nickname, setNickname, login}: LoginPropTypes) => {
       <form id="login-form" className="flex flex-col w-80 justify-center border-2 border-black p-8 bg-queen-blue rounded-lg shadow-lg">
         <label htmlFor="nickname" className="text-xl text-black font-semibold">Nickname</label>
         <input id="nickname" type="text" value={nickname} onChange={handleChange} className="font-xl p-3 mt-2 rounded-lg bg-bubbles" />
-        <button className="border border-black rounded-md p-2 mt-8 font-bold bg-medium-ruby" onClick={(e) => login(e)}>Login</button>
+        <button className="border border-black rounded-md p-2 mt-8 font-bold bg-medium-ruby" onClick={login}>Login</button>
       </form>
     </div>
   );

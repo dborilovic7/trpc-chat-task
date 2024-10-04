@@ -33,7 +33,7 @@ wss.on("connection", (ws, req) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}\n`);
 })
 
 process.on("SIGTERM", () => {
