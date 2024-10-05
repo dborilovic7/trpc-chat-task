@@ -4,6 +4,7 @@ import { z } from "zod";
 import { EventEmitter } from "events";
 import { loginUser, otherUsers, getOrCreateChannel, channels, channelMessages } from "./clientHandler";
 import type { Message, User } from "./types";
+import { findAndExecuteChatCommand } from "./chatCommands";
 
 export const mainEE = new EventEmitter();
 
@@ -75,12 +76,33 @@ export const appRouter = router({
       text: z.string()
     }))
     .mutation(({input}) => {
-      const { channelId } = input;
-      const channel = channels.get(channelId);
+      let { userId, channelId, text } = input;
 
-      channelMessages[channelId].push(input);
-      channel?.emit("message", {...input});
-    })
+      const { shouldSendMessage, ...args } = findAndExecuteChatCommand(input);
+      text = args.newText ?? text;
+      const thinkStyling = args.thinkStyling ?? false;
+
+      if(shouldSendMessage) {
+        const channel = channels.get(channelId);
+        channelMessages[channelId].push({userId, channelId, text, thinkStyling});
+        channel?.emit("message", {userId, channelId, text, thinkStyling});
+      }
+    }),
+
+    onMessagesUpdate: publicProcedure
+    .input(z.string())
+    .subscription(({input: channelId}) => {
+      return observable<Message[]>(emit => {
+        const channel = channels.get(channelId)!;
+        const onMessagesUpdate = (data: Message[]) => emit.next(data);
+
+        channel.on("messagesUpdate", onMessagesUpdate);
+        
+        return () => {
+          channel.off("messagesUpdate", onMessagesUpdate);
+        }
+      });
+    }),
 });
 
 export type AppRouter = typeof appRouter;

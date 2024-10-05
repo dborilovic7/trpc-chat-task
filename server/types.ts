@@ -4,6 +4,7 @@ export type Message = {
   userId: string;
   channelId: string;
   text: string;
+  thinkStyling?: boolean;
 }
 
 export type Client = {

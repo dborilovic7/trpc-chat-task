@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../trpc";
 import PersonList from "./chat_elements/PersonList";
 import ChatArea from "./chat_elements/ChatArea";
@@ -10,8 +10,13 @@ const Chat = ({uuid}: {uuid: string}) => {
   const [partnerToChannelMap, setPartnerToChannelMap] = useState<{[key: string]: string}>({});
   const [channelMessages, setChannelMessages] = useState<{[key:string]: Message[]}>({});
 
-  const channelId = chatPartner?.id ? partnerToChannelMap[chatPartner.id] : null;
+  const chatPartnerId = chatPartner?.id;
+  const channelId = chatPartnerId? partnerToChannelMap[chatPartnerId] : null;
   const messages = channelId ? channelMessages[channelId] : [];
+
+  useEffect(() => {
+    document.title = chatPartner ? `${chatPartner.nickname} | tRPChat` : "tRPChat";
+  }, [chatPartner]);
 
   trpc.getUsers.useQuery(uuid, {
     onSuccess(data) {
@@ -21,7 +26,11 @@ const Chat = ({uuid}: {uuid: string}) => {
 
   trpc.onUsersUpdate.useSubscription(uuid, {
     onData(data) {
-      setPersonList(data);
+      setPersonList(() => {
+        const newChatPartner = data.find(partner => partner.id === chatPartner?.id);
+        newChatPartner && setChatPartner(newChatPartner);
+        return data;
+      });
     }
   });
 
@@ -32,6 +41,13 @@ const Chat = ({uuid}: {uuid: string}) => {
         const newMessages = [...prevMessages[channelId!], data];
         return {...prevMessages, [channelId!]: newMessages};
       });
+    }
+  });
+
+  trpc.onMessagesUpdate.useSubscription(channelId!, {
+    enabled: !!channelId,
+    onData(data) {
+      setChannelMessages(prevMessages => ({...prevMessages, [channelId!]: data}));
     }
   });
 

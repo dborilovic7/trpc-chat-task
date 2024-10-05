@@ -72,7 +72,9 @@ const ChatArea = ({
       
       <div id="chat-area" className="w-full h-chat-area-xs sm:h-chat-area-sm xl:h-chat-area-xl 2xl:h-chat-area-2xl
         p-4 sm:p-6 md:p-8 text-xl 2xl:text-2xl leading-5 2xl:leading-6 overflow-auto">
-        {messages.map((message, i) => <ChatMessage key={`m${i}`} you={message.userId === uuid}>{message.text}</ChatMessage>)}
+        {messages.map((message, i) => (
+          <ChatMessage key={`m${i}`} you={message.userId === uuid} think={!!message.thinkStyling}>{message.text}</ChatMessage>
+        ))}
       </div>
 
       <form className="flex border-t border-black/25">

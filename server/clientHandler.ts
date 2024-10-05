@@ -27,7 +27,7 @@ export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
 
 export const unregisterClient = (ws: WebSocket) => {
   const id = Object.keys(clients).find(id => clients[id].ws === ws) ?? "";
-  
+
   users.delete(id);
   delete clients[id];
   mainEE.emit("usersUpdate");
@@ -69,4 +69,24 @@ export const getOrCreateChannel = (userId: string, partnerId: string) => {
 
   // ...and return the channel data.
   return {channelId: id, messages: []};
+}
+
+export const changeNickname = (userId: string, newNickname: string) => {
+  const user = users.get(userId)!;
+  user.nickname = newNickname;
+  mainEE.emit("usersUpdate");
+}
+
+export const deleteLastMessage = (userId: string, channelId: string) => {
+  const channel = channels.get(channelId)!;
+  const messages = channelMessages[channelId];
+  const length = messages.length;
+
+  for(let i = length - 1; i >= 0; i--) {
+    if(messages[i].userId === userId) {
+      messages.splice(i, 1);
+      channel.emit("messagesUpdate", messages);
+      return;
+    }
+  }
 }
