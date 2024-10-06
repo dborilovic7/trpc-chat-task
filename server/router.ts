@@ -2,7 +2,7 @@ import { router, publicProcedure } from "./trpc";
 import { observable } from "@trpc/server/observable";
 import { z } from "zod";
 import { EventEmitter } from "events";
-import { loginUser, otherUsers, getOrCreateChannel, channels, channelMessages } from "./clientHandler";
+import { loginUser, usersArray, getOrCreateChannel, channels, channelMessages } from "./clientHandler";
 import type { Message, User } from "./types";
 import { findAndExecuteChatCommand } from "./chatCommands";
 
@@ -28,7 +28,7 @@ export const appRouter = router({
     .input(z.string())
     .subscription(({ input }) => {
       return observable<User[]>(emit => {
-        const onUsersUpdate = () => emit.next(otherUsers(input));
+        const onUsersUpdate = () => emit.next(usersArray(input));
 
         mainEE.on("usersUpdate", onUsersUpdate);
         
@@ -40,7 +40,7 @@ export const appRouter = router({
 
   getUsers: publicProcedure
     .input(z.string())
-    .query(({ input }) => otherUsers(input)),
+    .query(({ input }) => usersArray(input)),
 
   getChannelData: publicProcedure
     .input(z.object({

@@ -39,4 +39,5 @@ export type PersonListItemPropTypes = {
   channelId: string|null;
   setPartnerToChannelMap: Dispatch<SetStateAction<{[key: string]: string}>>;
   setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
+  you: boolean;
 }

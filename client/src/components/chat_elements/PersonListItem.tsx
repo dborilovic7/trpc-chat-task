@@ -8,7 +8,8 @@ const PersonListItem = ({
   highlight,
   channelId,
   setPartnerToChannelMap,
-  setChannelMessages
+  setChannelMessages,
+  you
 }: PersonListItemPropTypes) => {
   trpc.onMessage.useSubscription(channelId!, {
     enabled: !!channelId,
@@ -45,6 +46,7 @@ const PersonListItem = ({
 
   const buttonHighlightClass = highlight ? " bg-bubbles text-medium-ruby font-semibold" : "";
   const imgHighlightClass = highlight ? "border-medium-ruby" : "border-black/25";
+  const youStyle = you ? " italic" : "";
 
   return (
     <li className="mb-4 last:mb-0">
@@ -55,7 +57,7 @@ const PersonListItem = ({
           alt="User profile picture"
           className={`border-2 ${imgHighlightClass} rounded-full w-18 h-18`}
         />
-        <h3 className="text-xl 2xl:text-2xl lg:ml-2">{person.nickname}</h3>
+        <h3 className={`text-xl 2xl:text-2xl lg:ml-2${youStyle}`}>{`${person.nickname}${you ? " (you)" : ""}`}</h3>
         <div className="w-4 2xl:w-18"></div>
       </button>
     </li>

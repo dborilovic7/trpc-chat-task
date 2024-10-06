@@ -14,9 +14,6 @@ const ChatArea = ({
   const [messageInput, setMessageInput] = useState("");
   const filteredMessage = messageInput.trim();
 
-  const sendButtonDisabled = filteredMessage.length < 1;
-  const sendButtonStyle = sendButtonDisabled ? "bg-medium-ruby/70" : "bg-medium-ruby";
-
   const messageMutation = trpc.message.useMutation({});
 
   const sendMessage = (e: MouseEvent) => {
@@ -37,6 +34,10 @@ const ChatArea = ({
     setMessageInput(value);
   }
 
+  const you = chatPartner?.id === uuid;
+  const sendButtonDisabled = filteredMessage.length < 1;
+  const sendButtonStyle = sendButtonDisabled ? "bg-medium-ruby/70" : "bg-medium-ruby";
+
   return chatPartner && channelId ? (
     <div id="chat-area-container" className="flex flex-col bg-bubbles sm:rounded-xl md:rounded-none
       md:col-span-3 lg:col-span-2">
@@ -52,7 +53,7 @@ const ChatArea = ({
           />
           
           <div id="chat-area-person-info" className="ml-2 text-black">
-            <h3 className="text-2xl 2xl:text-3xl">{chatPartner.nickname}</h3>
+            <h3 className="text-2xl 2xl:text-3xl">{`${chatPartner.nickname}${you ? " (you)" : ""}`}</h3>
             <p className="text-medium-ruby 2xl:text-lg">Online</p>
           </div>
         </div>

@@ -4,7 +4,7 @@ import PersonList from "./chat_elements/PersonList";
 import ChatArea from "./chat_elements/ChatArea";
 import type { Message, User } from "../../../server/types";
 
-const Chat = ({ uuid }: {uuid: string}) => {
+const Chat = ({ uuid }: { uuid: string }) => {
   const [personList, setPersonList] = useState<User[]>([]);
   const [chatPartner, setChatPartner] = useState<User|null>(null);
   const [partnerToChannelMap, setPartnerToChannelMap] = useState<{[key: string]: string}>({});

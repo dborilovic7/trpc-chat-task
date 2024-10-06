@@ -28,6 +28,7 @@ const PersonList = ({
             channelId={partnerToChannelMap[person.id]}
             setPartnerToChannelMap={setPartnerToChannelMap}
             setChannelMessages={setChannelMessages}
+            you={person.id === uuid}
           />
         ))}
       </ul>

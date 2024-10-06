@@ -10,10 +10,15 @@ let users: Map<string, ServerUser> = new Map();
 export let channels: Map<string, EventEmitter> = new Map();
 export let channelMessages: {[key:string]: Message[]} = {};
 
-export const otherUsers = (id: string): User[] => {
+export const usersArray = (id: string): User[] => {
+  const user = { id, ...users.get(id)! };
+
   let usersCopy = new Map(users);
   usersCopy.delete(id);
-  return Array.from(usersCopy, ([userId, rest]) => ({ id: userId, ...rest }));
+
+  let usersArr = Array.from(usersCopy, ([userId, rest]) => ({ id: userId, ...rest }));
+  usersArr.unshift(user);
+  return usersArr;
 }
 
 export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
