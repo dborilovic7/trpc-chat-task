@@ -51,6 +51,8 @@ export const getOrCreateChannel = (userId: string, partnerId: string) => {
   const user = users.get(userId)!;
   const channelId = user.channelMap[partnerId];
   if(channelId) {
+    console.log(`Retreived channel with id ${channelId}`);
+    console.log(`Channels size: ${channels.size}\n`);
     const messages = channelMessages[channelId];
     return {channelId, messages};
   };
@@ -60,7 +62,7 @@ export const getOrCreateChannel = (userId: string, partnerId: string) => {
   channels.set(id, new EventEmitter());
   channelMessages[id] = [];
   console.log(`Created a new channel with id ${id}`);
-  console.log(`Channels size: ${channels.size}`);
+  console.log(`Channels size: ${channels.size}\n`);
 
   // ...store it in both user's channel map...
   const partner = users.get(partnerId)!;

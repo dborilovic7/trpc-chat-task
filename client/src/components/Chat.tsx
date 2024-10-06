@@ -11,7 +11,7 @@ const Chat = ({uuid}: {uuid: string}) => {
   const [channelMessages, setChannelMessages] = useState<{[key:string]: Message[]}>({});
 
   const chatPartnerId = chatPartner?.id;
-  const channelId = chatPartnerId? partnerToChannelMap[chatPartnerId] : null;
+  const channelId = chatPartnerId ? partnerToChannelMap[chatPartnerId] : null;
   const messages = channelId ? channelMessages[channelId] : [];
 
   useEffect(() => {
@@ -31,23 +31,6 @@ const Chat = ({uuid}: {uuid: string}) => {
         newChatPartner && setChatPartner(newChatPartner);
         return data;
       });
-    }
-  });
-
-  trpc.onMessage.useSubscription(channelId!, {
-    enabled: !!channelId,
-    onData(data) {
-      setChannelMessages(prevMessages => {
-        const newMessages = [...prevMessages[channelId!], data];
-        return {...prevMessages, [channelId!]: newMessages};
-      });
-    }
-  });
-
-  trpc.onMessagesUpdate.useSubscription(channelId!, {
-    enabled: !!channelId,
-    onData(data) {
-      setChannelMessages(prevMessages => ({...prevMessages, [channelId!]: data}));
     }
   });
 

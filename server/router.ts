@@ -65,6 +65,8 @@ export const appRouter = router({
         return () => {
           channels.get(channelId)?.off("message", onMessage);
           channels.delete(channelId);
+          console.log(`Deleted channel with id ${channelId}`);
+          console.log(`Channels size: ${channels.size}\n`);
         }
       });
     }),

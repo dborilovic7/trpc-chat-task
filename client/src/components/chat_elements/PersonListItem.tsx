@@ -10,6 +10,23 @@ const PersonListItem = ({
   setPartnerToChannelMap,
   setChannelMessages
 }: PersonListItemPropTypes) => {
+  trpc.onMessage.useSubscription(channelId!, {
+    enabled: !!channelId,
+    onData(data) {
+      setChannelMessages(prevMessages => {
+        const newMessages = [...prevMessages[channelId!], data];
+        return {...prevMessages, [channelId!]: newMessages};
+      });
+    }
+  });
+
+  trpc.onMessagesUpdate.useSubscription(channelId!, {
+    enabled: !!channelId,
+    onData(data) {
+      setChannelMessages(prevMessages => ({...prevMessages, [channelId!]: data}));
+    }
+  });
+  
   const getChannelDataMutation = trpc.getChannelData.useMutation({
     onSuccess(data) {
       const { channelId, messages } = data;
