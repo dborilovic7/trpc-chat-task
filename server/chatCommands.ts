@@ -16,7 +16,14 @@ const chatCommandsWithArgs: ChatCommands = {
   "think": ({ arg }: ChatCommandWithArgs) => {
     const shouldSendMessage = arg.length < 1 ? false : true;
     return { shouldSendMessage, newText: arg, thinkStyling: true };
-  }
+  },
+  "edit": ({ arg, userId, channelId }: ChatCommandWithArgs) => {
+    if(arg.length > 1) {
+      deleteLastMessage(userId, channelId);
+      return { shouldSendMessage: true, newText: arg }
+    }
+    return { shouldSendMessage: false };
+  },
 }
 
 const commandRegex = /^\w+/;
