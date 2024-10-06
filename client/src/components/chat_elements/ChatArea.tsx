@@ -1,16 +1,8 @@
-import { useState, Dispatch, SetStateAction, ChangeEvent, MouseEvent } from "react";
+import { useState, ChangeEvent, MouseEvent } from "react";
 import { trpc } from "../../../trpc";
 import ChatMessage from "./ChatMessage";
 import InactiveChatArea from "./InactiveChatArea";
-import type { Message, User } from "../../../../server/types";
-
-type ChatAreaPropTypes = {
-  uuid: string;
-  chatPartner: User|null;
-  setChatPartner: Dispatch<SetStateAction<User|null>>;
-  channelId: string|null;
-  messages: Message[];
-}
+import type { ChatAreaPropTypes } from "../../../types";
 
 const ChatArea = ({
   uuid,

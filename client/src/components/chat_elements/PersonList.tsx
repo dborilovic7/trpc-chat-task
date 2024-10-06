@@ -1,16 +1,5 @@
 import PersonListItem from "./PersonListItem";
-import { Dispatch, SetStateAction } from "react";
-import type { Message, User } from "../../../../server/types";
-
-type PersonListPropTypes = {
-  uuid: string;
-  personList: User[];
-  chatPartner: User|null;
-  setChatPartner: Dispatch<SetStateAction<User|null>>;
-  partnerToChannelMap: {[key: string]: string};
-  setPartnerToChannelMap: Dispatch<SetStateAction<{[key: string]: string}>>;
-  setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
-}
+import type { PersonListPropTypes } from "../../../types";
 
 const PersonList = ({
   uuid,

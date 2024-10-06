@@ -1,10 +1,5 @@
-import { ChangeEvent, Dispatch, MouseEventHandler, SetStateAction } from "react";
-
-type LoginPropTypes = {
-  nickname: string;
-  setNickname: Dispatch<SetStateAction<string>>;
-  login: MouseEventHandler;
-}
+import { ChangeEvent } from "react";
+import type { LoginPropTypes } from "../../types";
 
 const Login = ({nickname, setNickname, login}: LoginPropTypes) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

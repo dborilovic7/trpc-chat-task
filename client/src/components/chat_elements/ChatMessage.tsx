@@ -1,10 +1,4 @@
-import { ReactNode } from "react";
-
-type ChatMessagePropTypes = {
-  you: boolean;
-  think: boolean;
-  children?: ReactNode;
-}
+import type { ChatMessagePropTypes } from "../../../types";
 
 const ChatMessage = ({you, think, children}: ChatMessagePropTypes) => {
   const styles = you

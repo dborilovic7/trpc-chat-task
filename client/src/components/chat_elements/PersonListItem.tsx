@@ -1,16 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
 import { trpc } from "../../../trpc";
-import type { Message, User } from "../../../../server/types";
-
-type PersonListItemPropTypes = {
-  uuid: string;
-  person: User;
-  setChatPartner: Dispatch<SetStateAction<User|null>>;
-  highlight: boolean;
-  channelId: string|null;
-  setPartnerToChannelMap: Dispatch<SetStateAction<{[key: string]: string}>>;
-  setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
-}
+import type { PersonListItemPropTypes } from "../../../types";
 
 const PersonListItem = ({
   uuid,
