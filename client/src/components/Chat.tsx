@@ -14,9 +14,16 @@ const Chat = ({ uuid }: { uuid: string }) => {
   const channelId = chatPartnerId ? partnerToChannelMap[chatPartnerId] : null;
   const messages = channelId ? channelMessages[channelId] : [];
 
+  // Set page's title to chat partner's nickname
   useEffect(() => {
     document.title = chatPartner ? `${chatPartner.nickname} | tRPChat` : "tRPChat";
   }, [chatPartner]);
+
+  // Scroll to the bottom of chat on any change to current messages
+  useEffect(() => {
+    const chatAreaElement = document.getElementById("chat-area");
+    chatAreaElement?.lastElementChild?.scrollIntoView();
+  }, [messages])
 
   trpc.getUsers.useQuery(uuid, {
     onSuccess(data) {

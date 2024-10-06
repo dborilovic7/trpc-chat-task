@@ -14,7 +14,7 @@ const ChatArea = ({
   const [messageInput, setMessageInput] = useState("");
   const filteredMessage = messageInput.trim();
 
-  const messageMutation = trpc.message.useMutation({});
+  const messageMutation = trpc.message.useMutation();
 
   const sendMessage = (e: MouseEvent) => {
     e.preventDefault();
