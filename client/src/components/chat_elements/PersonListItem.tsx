@@ -46,18 +46,26 @@ const PersonListItem = ({
 
   const buttonHighlightClass = highlight ? " bg-bubbles text-medium-ruby font-semibold" : "";
   const imgHighlightClass = highlight ? "border-medium-ruby" : "border-black/25";
-  const youStyle = you ? " italic" : "";
+  const styles = you
+    ? {
+      border: "border-bubbles/20",
+      nick: " italic"
+    }
+    : {
+      border: "border-black/25",
+      nick: ""
+    }
 
   return (
     <li className="mb-4 last:mb-0">
       <button onClick={handlePersonClick} className={`flex justify-between items-center gap-2 w-full h-full
-        border border-black/25 rounded-xl px-2 sm:px-4 py-1 sm:py-2 shadow-md${buttonHighlightClass}`}>
+        border ${styles.border} rounded-xl px-2 sm:px-4 py-1 sm:py-2 shadow-md${buttonHighlightClass}`}>
         <img
           src="/src/assets/images/avatar-ph.png"
           alt="User profile picture"
           className={`border-2 ${imgHighlightClass} rounded-full w-18 h-18`}
         />
-        <h3 className={`text-xl 2xl:text-2xl lg:ml-2${youStyle}`}>{`${person.nickname}${you ? " (you)" : ""}`}</h3>
+        <h3 className={`text-xl 2xl:text-2xl lg:ml-2${styles.nick}`}>{`${person.nickname}${you ? " (you)" : ""}`}</h3>
         <div className="w-4 2xl:w-18"></div>
       </button>
     </li>
