@@ -22,3 +22,18 @@ export type ServerUser = {
   nickname: string;
   channelMap: { [key: string]: string };
 }
+
+export type ChatCommands = {
+  [key: string]: Function;
+}
+
+export type ChatCommandWithoutArgs = {
+  userId: string;
+  channelId: string;
+}
+
+export type ChatCommandWithArgs = {
+  arg: string;
+  userId: string;
+  channelId: string;
+}

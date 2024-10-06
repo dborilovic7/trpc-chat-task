@@ -1,19 +1,19 @@
 import { changeNickname, deleteLastMessage } from "./clientHandler";
-import { Message } from "./types";
+import type { Message, ChatCommands, ChatCommandWithoutArgs, ChatCommandWithArgs } from "./types";
 
-const chatCommandsWithoutArgs: { [key: string]: Function } = {
-  "oops": ({ userId, channelId }: { userId: string, channelId: string }) => {
+const chatCommandsWithoutArgs: ChatCommands = {
+  "oops": ({ userId, channelId }: ChatCommandWithoutArgs) => {
     deleteLastMessage(userId, channelId);
     return { shouldSendMessage: false };
   }
 }
 
-const chatCommandsWithArgs: { [key: string]: Function } = {
-  "nick": ({ arg, userId }: { arg: string, userId: string }) => {
+const chatCommandsWithArgs: ChatCommands = {
+  "nick": ({ arg, userId }: ChatCommandWithArgs) => {
     arg.length > 0 && changeNickname(userId, arg);
     return { shouldSendMessage: false };
   },
-  "think": ({ arg }: { arg: string }) => {
+  "think": ({ arg }: ChatCommandWithArgs) => {
     const shouldSendMessage = arg.length < 1 ? false : true;
     return { shouldSendMessage, newText: arg, thinkStyling: true };
   }
