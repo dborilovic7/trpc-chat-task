@@ -1,5 +1,6 @@
 import { trpc } from "../../../trpc";
 import type { PersonListItemPropTypes } from "../../../types";
+import { notificationSound } from "../../sounds";
 
 const PersonListItem = ({
   uuid,
@@ -18,6 +19,8 @@ const PersonListItem = ({
         const newMessages = [...prevMessages[channelId!], data];
         return {...prevMessages, [channelId!]: newMessages};
       });
+
+      data.userId !== uuid && notificationSound.play();
     }
   });
 

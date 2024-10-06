@@ -1,0 +1,1 @@
+export const notificationSound = new Audio("/src/assets/sounds/bubble-pop.mp3");
