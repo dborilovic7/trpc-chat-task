@@ -26,7 +26,7 @@ const PersonListItem = ({
       setChannelMessages(prevMessages => ({...prevMessages, [channelId!]: data}));
     }
   });
-  
+
   const getChannelDataMutation = trpc.getChannelData.useMutation({
     onSuccess(data) {
       const { channelId, messages } = data;
@@ -40,7 +40,7 @@ const PersonListItem = ({
   const handlePersonClick = () => {
     channelId
       ? setChatPartner(person)
-      : getChannelDataMutation.mutate({userId: uuid, partnerId: person.id});
+      : getChannelDataMutation.mutate({ userId: uuid, partnerId: person.id });
   }
 
   const buttonHighlightClass = highlight ? " bg-bubbles text-medium-ruby font-semibold" : "";

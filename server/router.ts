@@ -19,14 +19,14 @@ export const appRouter = router({
       id: z.string(),
       nickname: z.string()
     }))
-    .mutation(({input}) => {
+    .mutation(({ input }) => {
       const { id, nickname } = input;
       loginUser(id, nickname);
     }),
 
   onUsersUpdate: publicProcedure
     .input(z.string())
-    .subscription(({input}) => {
+    .subscription(({ input }) => {
       return observable<User[]>(emit => {
         const onUsersUpdate = () => emit.next(otherUsers(input));
 
@@ -40,21 +40,21 @@ export const appRouter = router({
 
   getUsers: publicProcedure
     .input(z.string())
-    .query(({input}) => otherUsers(input)),
+    .query(({ input }) => otherUsers(input)),
 
   getChannelData: publicProcedure
     .input(z.object({
       userId: z.string(),
       partnerId: z.string()
     }))
-    .mutation(({input}) => {
-      const {userId, partnerId} = input;
+    .mutation(({ input }) => {
+      const { userId, partnerId } = input;
       return getOrCreateChannel(userId, partnerId);
     }),
 
   onMessage: publicProcedure
     .input(z.string())
-    .subscription(({input: channelId}) => {
+    .subscription(({ input: channelId }) => {
       return observable<Message>(emit => {
         const onMessage = (data: Message) => {
           emit.next(data);
@@ -77,7 +77,7 @@ export const appRouter = router({
       channelId: z.string(),
       text: z.string()
     }))
-    .mutation(({input}) => {
+    .mutation(({ input }) => {
       let { userId, channelId, text } = input;
 
       const { shouldSendMessage, ...args } = findAndExecuteChatCommand(input);
@@ -86,14 +86,14 @@ export const appRouter = router({
 
       if(shouldSendMessage) {
         const channel = channels.get(channelId);
-        channelMessages[channelId].push({userId, channelId, text, thinkStyling});
-        channel?.emit("message", {userId, channelId, text, thinkStyling});
+        channelMessages[channelId].push({ userId, channelId, text, thinkStyling });
+        channel?.emit("message", { userId, channelId, text, thinkStyling });
       }
     }),
 
     onMessagesUpdate: publicProcedure
     .input(z.string())
-    .subscription(({input: channelId}) => {
+    .subscription(({ input: channelId }) => {
       return observable<Message[]>(emit => {
         const channel = channels.get(channelId)!;
         const onMessagesUpdate = (data: Message[]) => emit.next(data);

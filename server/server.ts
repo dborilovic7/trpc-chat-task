@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 
 // WS Server
-const wss = new wsServer({server});
+const wss = new wsServer({ server });
 const wssHandler = applyWSSHandler<AppRouter>({
   wss,
   router: appRouter

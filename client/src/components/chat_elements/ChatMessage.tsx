@@ -1,6 +1,6 @@
 import type { ChatMessagePropTypes } from "../../../types";
 
-const ChatMessage = ({you, think, children}: ChatMessagePropTypes) => {
+const ChatMessage = ({ you, think, children }: ChatMessagePropTypes) => {
   const styles = you
   ? {
     reverseClass: " flex-row-reverse",

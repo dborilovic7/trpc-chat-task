@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import type { LoginPropTypes } from "../../types";
 
-const Login = ({nickname, setNickname, login}: LoginPropTypes) => {
+const Login = ({ nickname, setNickname, login }: LoginPropTypes) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setNickname(value);

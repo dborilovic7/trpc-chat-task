@@ -13,7 +13,7 @@ export let channelMessages: {[key:string]: Message[]} = {};
 export const otherUsers = (id: string): User[] => {
   let usersCopy = new Map(users);
   usersCopy.delete(id);
-  return Array.from(usersCopy, ([userId, rest]) => ({id: userId, ...rest}));
+  return Array.from(usersCopy, ([userId, rest]) => ({ id: userId, ...rest }));
 }
 
 export const registerClient = (ws: WebSocket, req: IncomingMessage) => {
@@ -39,7 +39,7 @@ export const unregisterClient = (ws: WebSocket) => {
 
 export const loginUser = (id: string, nickname: string) => {
   clients[id].nickname = nickname;
-  users.set(id, {nickname, channelMap: {}});
+  users.set(id, { nickname, channelMap: {} });
   mainEE.emit("usersUpdate");
 
   console.log(`Set ${id}'s nickname to ${nickname}.`);
@@ -54,7 +54,7 @@ export const getOrCreateChannel = (userId: string, partnerId: string) => {
     console.log(`Retreived channel with id ${channelId}`);
     console.log(`Channels size: ${channels.size}\n`);
     const messages = channelMessages[channelId];
-    return {channelId, messages};
+    return { channelId, messages };
   };
 
   // If this user pair doesn't have a channel, create a new one...
@@ -70,7 +70,7 @@ export const getOrCreateChannel = (userId: string, partnerId: string) => {
   partner.channelMap[userId] = id;
 
   // ...and return the channel data.
-  return {channelId: id, messages: []};
+  return { channelId: id, messages: [] };
 }
 
 export const changeNickname = (userId: string, newNickname: string) => {

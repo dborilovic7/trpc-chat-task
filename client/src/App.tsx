@@ -3,7 +3,7 @@ import { trpc } from "../trpc";
 import Chat from "./components/Chat";
 import Login from "./components/Login";
 
-function App({uuid}: {uuid: string}) {
+function App({ uuid }: { uuid: string }) {
   const [nickname, setNickname] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
