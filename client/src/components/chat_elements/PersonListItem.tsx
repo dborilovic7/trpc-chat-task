@@ -68,7 +68,7 @@ const PersonListItem = ({
           alt="User profile picture"
           className={`border-2 ${imgHighlightClass} rounded-full w-18 h-18`}
         />
-        <h3 className={`text-xl 2xl:text-2xl lg:ml-2${styles.nick}`}>{`${person.nickname}${you ? " (you)" : ""}`}</h3>
+        <h2 className={`text-xl 2xl:text-2xl lg:ml-2${styles.nick}`}>{`${person.nickname}${you ? " (you)" : ""}`}</h2>
         <div className="w-4 2xl:w-18"></div>
       </button>
     </li>

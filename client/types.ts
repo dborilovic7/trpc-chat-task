@@ -41,3 +41,8 @@ export type PersonListItemPropTypes = {
   setChannelMessages: Dispatch<SetStateAction<{[key:string]: Message[]}>>;
   you: boolean;
 }
+
+export type HelpDialogPropTypes = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
