@@ -5,6 +5,7 @@ import { EventEmitter } from "events";
 import { loginUser, usersArray, getOrCreateChannel, channels, channelMessages } from "./clientHandler";
 import type { Message, User } from "./types";
 import { findAndExecuteChatCommand } from "./chatCommands";
+import replaceCharacters from "./replaceCharacters";
 
 export const mainEE = new EventEmitter();
 
@@ -85,6 +86,8 @@ export const appRouter = router({
       const thinkStyling = args.thinkStyling ?? false;
 
       if(shouldSendMessage) {
+        text = replaceCharacters(text);
+
         const channel = channels.get(channelId);
         channelMessages[channelId].push({ userId, channelId, text, thinkStyling });
         channel?.emit("message", { userId, channelId, text, thinkStyling });

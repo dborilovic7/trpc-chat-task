@@ -37,3 +37,5 @@ export type ChatCommandWithArgs = {
   userId: string;
   channelId: string;
 }
+
+export type CharacterReplacementMap = Map<RegExp, string>;
