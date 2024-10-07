@@ -1,0 +1,14 @@
+{
+  "name": "trpc-chat-task",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently --names \"Server,Client\" --prefix-colors \"blue,green\" \"npm run dev --prefix server\" \"npm run dev --prefix client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
