@@ -15,3 +15,6 @@
 - Update partnerToChannelMap on usersUpdate?
 - Focus msg input when clicked on chat area
 - Add more avatars to choose from + choose avatar on login
+- Fix bug: message sounds not playing if a person never entered the chat
+- Add unread messages as a number (right next to the name of a chat partner?)
+  - cap at a certain number (99+?)
