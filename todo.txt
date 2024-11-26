@@ -1,0 +1,17 @@
+- Name max letters: 20
+- Handle (tRPC) errors
+- Use .env files for http and ws server addresses
+- Add a favicon
+- Custom scrollbars
+- Smisli bolji export za Chat komponentu
+- Change font size on sm screens?
+- Make different spacings between your and the other person's messages
+- Persist chats (Prisma + pgSQL?)
+- Manage client state differently?
+- Own messages optimistic updates
+- Optimize(useMemo?)
+- Simplify registering of clients if possible?
+- Multiple users chat (group chats)
+- Update partnerToChannelMap on usersUpdate?
+- Focus msg input when clicked on chat area
+- Add more avatars to choose from + choose avatar on login
